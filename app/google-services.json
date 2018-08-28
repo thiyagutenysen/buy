@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "332819203945",
+    "firebase_url": "https://buyandsell-eaabe.firebaseio.com",
+    "project_id": "buyandsell-eaabe",
+    "storage_bucket": "buyandsell-eaabe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332819203945:android:6e80f43e0636d9b0",
+        "android_client_info": {
+          "package_name": "com.example.chella.buy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332819203945-g6rnrgljsrum7ohholi8bt1k5ra4c13j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chella.buy",
+            "certificate_hash": "92de8b313c603e3e80010fdd7825ae685a9639ec"
+          }
+        },
+        {
+          "client_id": "332819203945-ct0rbh98p8osgndl11jlhaasmnr7parb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSoDt3DLDVcu4BcrAIJI9Esma5cY1DWxI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332819203945-ct0rbh98p8osgndl11jlhaasmnr7parb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
