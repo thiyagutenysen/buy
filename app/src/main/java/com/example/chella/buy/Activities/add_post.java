@@ -1,5 +1,6 @@
 package com.example.chella.buy.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.chella.buy.Model.Buy_and_sell;
@@ -44,6 +46,8 @@ public class add_post extends AppCompatActivity {
     private Uri imguri=null;
     private FirebaseFirestore db;
     private static final int code=1;
+    private ProgressBar progressBar;
+    private ProgressDialog mprogress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +59,12 @@ public class add_post extends AppCompatActivity {
         mdataBaseReference= database.getReference().child("mBuy");
         img = findViewById(R.id.imageButton);
         db=FirebaseFirestore.getInstance();
-
+        progressBar=findViewById(R.id.progressBar2);
         title=findViewById(R.id.editText7);
         price=findViewById(R.id.editText9);
         desc=findViewById(R.id.editText10);
         submit=findViewById(R.id.button4);
+        mprogress = new ProgressDialog(this);
 
         mstorageReference= FirebaseStorage.getInstance().getReference();
         img.setOnClickListener(new View.OnClickListener() {
@@ -91,34 +96,42 @@ public class add_post extends AppCompatActivity {
     }
 
     private void startPosting() {
+        mprogress.setMessage("Posting...");
         final String titleval = title.getText().toString().trim();
         final String priceval = price.getText().toString().trim();
         final String descval = desc.getText().toString().trim();
         if (!TextUtils.isEmpty(titleval)&&!TextUtils.isEmpty(priceval)){
+            mprogress.show();
             StorageReference filepath = mstorageReference.child("product").child(imguri.getLastPathSegment());
             filepath.putFile(imguri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Log.d("1","1");
+                    progressBar.setVisibility(View.VISIBLE);
+                    //progressBar.show();
                     Uri download = taskSnapshot.getDownloadUrl();
                     DatabaseReference newpost = mdataBaseReference.push();
                     Map<String,String> datatosave = new HashMap<>();
                     datatosave.put("title",titleval);
                     datatosave.put("price","₹"+priceval);
-                    datatosave.put("desc",descval);
+                    datatosave.put("desc","Description : "+descval);
                     datatosave.put("timestamp",String.valueOf(java.lang.System.currentTimeMillis()));
                     datatosave.put("image", String.valueOf(download));
 
                     datatosave.put("userid",muser.getUid());
                    newpost.setValue(datatosave);
+                   mprogress.dismiss();
                     /*db.collection("products").add(datatosave).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Toast.makeText(add_post.this,"Successssss",Toast.LENGTH_LONG).show();
                         }
                     });*/
+
                     startActivity(new Intent(add_post.this,postActivity.class));
                     finish();
+                    progressBar.setVisibility(View.GONE);
+
                 }
             });
 

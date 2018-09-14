@@ -26,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class postActivity extends AppCompatActivity {
@@ -93,6 +95,7 @@ public class postActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Buy_and_sell buy =dataSnapshot.getValue(Buy_and_sell.class);
                 buy_and_sell.add(buy);
+                Collections.reverse(buy_and_sell);// newly added code suspect
                 adapters = new adapter(postActivity.this,buy_and_sell);
                 rv.setAdapter(adapters);
                 adapters.notifyDataSetChanged();

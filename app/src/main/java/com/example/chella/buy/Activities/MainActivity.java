@@ -1,5 +1,6 @@
 package com.example.chella.buy.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private Button signin;
     private EditText email;
     private EditText password;
+    private ProgressDialog pro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         signin = findViewById(R.id.button2);
         email =  findViewById(R.id.editText);
         password = findViewById(R.id.editText2);
+        pro=new ProgressDialog(this);
         mAuthListener= new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -78,12 +81,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(String emailid, String pwd) {
+        pro.setMessage("logging in ...  ");
+        pro.show();
         mAuth.signInWithEmailAndPassword(emailid,pwd)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
+
                             Toast.makeText(MainActivity.this,"successfully logged in",Toast.LENGTH_SHORT).show();
+                            pro.dismiss();
                             startActivity(new Intent(MainActivity.this,postActivity.class));
                             finish();
                         }

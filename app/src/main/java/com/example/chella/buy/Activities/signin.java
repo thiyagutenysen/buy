@@ -1,5 +1,6 @@
 package com.example.chella.buy.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,7 +28,7 @@ public class signin extends AppCompatActivity {
     private DatabaseReference mDatabaseReference;
     private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
-    private ProgressBar progress;
+    private ProgressDialog progress;
 
 
     @Override
@@ -38,7 +39,7 @@ public class signin extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference().child("User");
         mAuth = FirebaseAuth.getInstance();
-        progress = new ProgressBar(this);
+        progress = new ProgressDialog(this);
         name = findViewById(R.id.editText3);
         email = findViewById(R.id.editText4);
         pwd = findViewById(R.id.editText5);
@@ -53,11 +54,13 @@ public class signin extends AppCompatActivity {
     }
 
     private void createNewAccount() {
+        progress.setMessage("signing in...  ");
         final String naam = name.getText().toString().trim();
         String em = email.getText().toString().trim();
         String password = pwd.getText().toString().trim();
         final String core = course.getText().toString().trim();
         if (!TextUtils.isEmpty(naam)&&!TextUtils.isEmpty(em)&&!TextUtils.isEmpty(password)&&!TextUtils.isEmpty(core)){
+            progress.show();
             mAuth.createUserWithEmailAndPassword(em,password)
                     .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
@@ -70,6 +73,7 @@ public class signin extends AppCompatActivity {
 
                             Intent intent = new Intent(signin.this,postActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            progress.dismiss();
                             startActivity(intent);
                             finish();
                         }
