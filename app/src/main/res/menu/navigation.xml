@@ -7,12 +7,18 @@
         android:title="@string/title_home"
         app:showAsAction="always"
         />
+    <item
+        android:id="@+id/mypost"
+        android:icon="@drawable/ic_action_name"
+        android:title="myposts"
+        app:showAsAction="always"/>
+
 
 
 
     <item
         android:id="@+id/navigation_account"
-        android:icon="@drawable/ic_action_name"
+        android:icon="@drawable/ic_action_account"
         android:title="Account"
         app:showAsAction="always"/>
 

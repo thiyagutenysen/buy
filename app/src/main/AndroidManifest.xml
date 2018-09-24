@@ -35,7 +35,9 @@
         -->
 
         <activity android:name=".Activities.add_post" />
-        <activity android:name=".Activities.account"></activity>
+        <activity android:name=".Activities.account" />
+        <activity android:name=".Activities.myPost" />
+        <activity android:name=".Activities.each_post"></activity>
     </application>
 
 </manifest>

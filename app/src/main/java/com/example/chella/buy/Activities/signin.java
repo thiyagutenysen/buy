@@ -59,7 +59,9 @@ public class signin extends AppCompatActivity {
         String em = email.getText().toString().trim();
         String password = pwd.getText().toString().trim();
         final String core = course.getText().toString().trim();
-        if (!TextUtils.isEmpty(naam)&&!TextUtils.isEmpty(em)&&!TextUtils.isEmpty(password)&&!TextUtils.isEmpty(core)){
+        final int pass=password.length();
+        if (!TextUtils.isEmpty(naam)&&!TextUtils.isEmpty(em)&&!TextUtils.isEmpty(password)&&!TextUtils.isEmpty(core)&&pass>=6&&em.contains("@smail.iitm.ac.in")){
+
             progress.show();
             mAuth.createUserWithEmailAndPassword(em,password)
                     .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -78,11 +80,25 @@ public class signin extends AppCompatActivity {
                             finish();
                         }
                         else{
+
                             Toast.makeText(signin.this,"try again",Toast.LENGTH_LONG).show();
                         }
-                                              }
-                                          }
+
+                                              }}
                     );
+        }
+        else {
+             if(TextUtils.isEmpty(naam)||TextUtils.isEmpty(em)||TextUtils.isEmpty(password)||TextUtils.isEmpty(core)) {
+                 Toast.makeText(signin.this, "fill all the sections", Toast.LENGTH_LONG).show();
+             }
+            else if (pass<6)
+            {
+                Toast.makeText(signin.this,"password should contain atleast 6 characters",Toast.LENGTH_LONG).show();
+            }
+            else if (!em.contains("@smail.iitm.ac.in")){
+                 Toast.makeText(signin.this,"email must be your smail id",Toast.LENGTH_LONG).show();
+        }
+
         }
     }
 }

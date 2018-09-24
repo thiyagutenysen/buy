@@ -34,6 +34,10 @@ public class account extends AppCompatActivity {
                     case R.id.navigation_home:
                         startActivity(new Intent(account.this, postActivity.class));
                         finish();
+                        break;
+                    case R.id.mypost:
+                        startActivity(new Intent(account.this, myPost.class));
+                        finish();
                         break;}
                 return true;
             }

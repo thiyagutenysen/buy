@@ -68,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     String pwd=password.getText().toString();
                     login(emailid,pwd);
                 }
+                else {
+                    Toast.makeText(MainActivity.this,"check your internet connection",Toast.LENGTH_LONG).show();
+                }
             }
         });
         signin.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +98,9 @@ public class MainActivity extends AppCompatActivity {
                             finish();
                         }
                         else {
-                            Toast.makeText(MainActivity.this,"Check your internet connection",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this,"emailid or password does not exist",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this,"Please signup",Toast.LENGTH_SHORT).show();
+                            pro.dismiss();
                         }
                     }
                 });
