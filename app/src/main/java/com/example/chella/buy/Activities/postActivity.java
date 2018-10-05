@@ -4,14 +4,17 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.Toast;
 
 import com.example.chella.buy.Model.Buy_and_sell;
 import com.example.chella.buy.R;
@@ -23,12 +26,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class postActivity extends AppCompatActivity {
 
@@ -42,6 +49,7 @@ public class postActivity extends AppCompatActivity {
     private FloatingActionButton add;
     private BottomNavigationView nav;
     private FirebaseFirestore db;
+    private static final String TAG = "postActivity";
 
 
 
@@ -57,6 +65,39 @@ public class postActivity extends AppCompatActivity {
         add = findViewById(R.id.floatingActionButton);
         mdataBaseReference.keepSynced(true);
         nav =  findViewById(R.id.navigationView);
+
+        mdataBaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Buy_and_sell buy =dataSnapshot.getValue(Buy_and_sell.class);
+                buy_and_sell.add(buy);
+                Log.d("abce",buy.getTitle());
+                Collections.reverse(buy_and_sell);// newly added code suspect
+                adapters = new adapter(postActivity.this,buy_and_sell);
+                rv.setAdapter(adapters);
+                adapters.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         buy_and_sell = new ArrayList<>();
@@ -86,6 +127,22 @@ public class postActivity extends AppCompatActivity {
 
             }
         });
+        long cutoff = new Date().getTime() - TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
+        System.out.print(cutoff);
+        Query oldItems = mdataBaseReference.orderByChild("timestamp").endAt(cutoff);
+        oldItems.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot itemSnapshot: snapshot.getChildren()) {
+                    itemSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
 
 
     }
@@ -94,37 +151,8 @@ public class postActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        mdataBaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Buy_and_sell buy =dataSnapshot.getValue(Buy_and_sell.class);
-                buy_and_sell.add(buy);
-                Collections.reverse(buy_and_sell);// newly added code suspect
-                adapters = new adapter(postActivity.this,buy_and_sell);
-                rv.setAdapter(adapters);
-                adapters.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
 
