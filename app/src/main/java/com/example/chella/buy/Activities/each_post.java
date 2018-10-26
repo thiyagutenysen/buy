@@ -178,7 +178,7 @@ public class each_post extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 comment buy = null;
-                //Toast.makeText(myPost.this,"Success",Toast.LENGTH_LONG).show();
+
                 Log.d("bye", key);
                     Log.d("hi", "I am happy");
                    // Toast.makeText(each_post.this, "Success", Toast.LENGTH_LONG).show();
