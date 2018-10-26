@@ -1,5 +1,5 @@
 # buy
-7 activities
+10 activities
   1.post activity - it is buy and sell general page where u can get all posts.
   2.mypost - in this you can only your buy and sell posts
   3.lostAndFound - it is lost and found general page where u can get all posts.
@@ -8,6 +8,8 @@
   6.addpost - buy and sell add post page
   7addpostFound - lost and found add page.
   8.eachpost - buy and sell comment page.
+  9.signin - here users can register their account.
+  10.mainactivity - here users can login.
 5 adapters
  1.adapter 1 is for post activity row.xml  used in postactivity page.
  2.adapter 2 is for mypost row.xml  used in mypost page.
