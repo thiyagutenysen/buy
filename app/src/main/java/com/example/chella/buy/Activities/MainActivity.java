@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
                 else{
-                    Toast.makeText(MainActivity.this,"not signed in",Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,"not signed in",Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String emailid=email.getText().toString();
                 if (TextUtils.isEmpty(email.getText().toString())){
-                    Toast.makeText(MainActivity.this,"check your emailid",Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,"enter correct emailid",Toast.LENGTH_LONG).show();
                 }
                 else {
                     mAuth.sendPasswordResetEmail(emailid).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -117,20 +118,36 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
 
-                            Toast.makeText(MainActivity.this,"successfully logged in",Toast.LENGTH_SHORT).show();
-                            pro.dismiss();
-                            startActivity(new Intent(MainActivity.this,postActivity.class));
+                            Toast.makeText(MainActivity.this, "successfully logged in", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(MainActivity.this, postActivity.class));
                             finish();
-                        }
-                        else {
-                            Toast.makeText(MainActivity.this,"emailid or password does not exist",Toast.LENGTH_SHORT).show();
-                            Toast.makeText(MainActivity.this,"Please signup",Toast.LENGTH_SHORT).show();
+
+
+                            pro.dismiss();
+
+                        } else {
+                            Toast.makeText(MainActivity.this, "emailid or password does not exist", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Please signup", Toast.LENGTH_SHORT).show();
                             pro.dismiss();
                         }
                     }
                 });
+    }
+    private void checkEmailVerification(){
+            user=mAuth.getCurrentUser();
+        if (user.isEmailVerified()){
+
+            Toast.makeText(MainActivity.this, "successfully logged in", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this, postActivity.class));
+            finish();
+        }
+        else {
+            Log.d("check","1");
+            Toast.makeText(MainActivity.this, "check your smail to verify your account", Toast.LENGTH_SHORT).show();
+            mAuth.signOut();
+        }
     }
 
     @Override
@@ -143,5 +160,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //android.os.Process.killProcess(android.os.Process.myPid());
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
 }

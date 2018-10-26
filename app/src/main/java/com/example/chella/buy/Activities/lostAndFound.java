@@ -1,26 +1,20 @@
 package com.example.chella.buy.Activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.Toast;
 
+import com.example.chella.buy.Data.adapter3;
 import com.example.chella.buy.Model.Buy_and_sell;
 import com.example.chella.buy.R;
-import com.example.chella.buy.Data.adapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -33,20 +27,19 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class postActivity extends AppCompatActivity {
+public class lostAndFound extends AppCompatActivity {
 
     private RecyclerView rv;
     private FirebaseAuth mAuth;
     private DatabaseReference mdataBaseReference;
     private FirebaseUser muser;
     private FirebaseDatabase mdataBase;
-    private adapter adapters;
+    private adapter3 adapters;
     private List<Buy_and_sell> buy_and_sell;
     private FloatingActionButton add;
     private BottomNavigationView nav;
@@ -58,30 +51,15 @@ public class postActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post);
+        setContentView(R.layout.activity_lost_and_found);
         mAuth=FirebaseAuth.getInstance();
         muser=mAuth.getCurrentUser();
         mdataBase=FirebaseDatabase.getInstance();
-        mdataBaseReference=mdataBase.getReference().child("mBuy");
+        mdataBaseReference=mdataBase.getReference().child("mFound");
         db=FirebaseFirestore.getInstance();
-        add = findViewById(R.id.floatingActionButton);
+        add = findViewById(R.id.floatingActionButton3);
         mdataBaseReference.keepSynced(true);
         nav =  findViewById(R.id.navigationView);
-
-
-
-
-
-
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (muser.isEmailVerified()) {
-            Log.d("check verif ins","1");
 
         mdataBaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -90,7 +68,7 @@ public class postActivity extends AppCompatActivity {
                 buy_and_sell.add(buy);
                 Log.d("abce",buy.getTitle());
                 Collections.reverse(buy_and_sell);// newly added code suspect
-                adapters = new adapter(postActivity.this,buy_and_sell);
+                adapters = new adapter3(lostAndFound.this,buy_and_sell);
                 rv.setAdapter(adapters);
                 adapters.notifyDataSetChanged();
             }
@@ -123,23 +101,21 @@ public class postActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_account:
-                        startActivity(new Intent(postActivity.this, account.class));
+                        startActivity(new Intent(lostAndFound.this, account.class));
                         finish();
                         break;
                     case R.id.mypost:
-                        startActivity(new Intent(postActivity.this, myPost.class));
+                        startActivity(new Intent(lostAndFound.this, myPost.class));
+                        finish();
+                        break;
+                    case R.id.navigation_home:
+                        startActivity(new Intent(lostAndFound.this, postActivity.class));
                         finish();
                         break;
                     case R.id.mypostfounds:
-                        startActivity(new Intent(postActivity.this, myPostFound.class));
-                        Log.d("awesome","0");
+                        startActivity(new Intent(lostAndFound.this, myPostFound.class));
                         finish();
-                        break;
-                    case R.id.navigation_found:
-                        startActivity(new Intent(postActivity.this, lostAndFound.class));
-                        finish();
-                        break;
-                    }
+                        break;}
                 return true;
             }
         });
@@ -149,7 +125,7 @@ public class postActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(postActivity.this,add_post.class));
+                startActivity(new Intent(lostAndFound.this,addPostFound.class));
 
 
             }
@@ -169,57 +145,9 @@ public class postActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 throw databaseError.toException();
             }
-        }); }
-        else {
-            Log.d("check verif ins", "2");
-
-            emailverify();
-        }
+        });
 
 
     }
 
-    public void emailverify() {
-        Log.d("verify","3");
-        new AlertDialog.Builder(this)
-                .setTitle("Email Not Verified")
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        mAuth.signOut();
-                        Intent intent = new Intent(postActivity.this,MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .setMessage("Please go to your inbox and verify your mail")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        mAuth.signOut();
-                        Intent intent = new Intent(postActivity.this,MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }).create().show();
-    }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation,menu);
-        return super.onCreateOptionsMenu(menu);*/
-    }
-    //@Override
-    //public boolean onNavigationItemSelected(MenuItem item) {
-      //      switch (item.getItemId()) {
-        //        case R.id.navigation_account:
-          //          startActivity(new Intent(postActivity.this, account.class));
-            //        break;
-
-            //}
-
-       // return super.onOptionsItemSelected(item);
-    //}
-
-
-
+}

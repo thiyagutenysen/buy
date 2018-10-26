@@ -74,6 +74,14 @@ public class myPost extends AppCompatActivity {
                         startActivity(new Intent(myPost.this, postActivity.class));
                         finish();
                         break;
+                    case R.id.navigation_found:
+                        startActivity(new Intent(myPost.this, lostAndFound.class));
+                        finish();
+                        break;
+                    case R.id.mypostfounds:
+                        startActivity(new Intent(myPost.this, myPostFound.class));
+                        finish();
+                        break;
                 }
                 return true;
             }
@@ -81,24 +89,17 @@ public class myPost extends AppCompatActivity {
         rv = findViewById(R.id.recyclerView);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(this));
-    }
 
+        mdataBaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Buy_and_sell buy= null;
+                //for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
 
-    @Override
-        protected void onStart() {
-            super.onStart();
-
-
-            mdataBaseReference.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Buy_and_sell buy= null;
-                    //for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
-
-                        //Toast.makeText(myPost.this,"Success",Toast.LENGTH_LONG).show();
-                        //User user = dataSnapshot1.getValue(User.class);
-                    Log.d("hello",dataSnapshot.child("userid").getValue(String.class) );
-                    Log.d("bye", muser.getUid());
+                //Toast.makeText(myPost.this,"Success",Toast.LENGTH_LONG).show();
+                //User user = dataSnapshot1.getValue(User.class);
+                Log.d("hello",dataSnapshot.child("userid").getValue(String.class) );
+                Log.d("bye", muser.getUid());
                     /*for (DataSnapshot data : dataSnapshot.getChildren())
                     {
                         Log.d("hi", "I am happy");
@@ -110,51 +111,51 @@ public class myPost extends AppCompatActivity {
                         }
                     }*/
 
-                        if (dataSnapshot.child("userid").getValue(String.class).equals(muser.getUid()))
+                if (dataSnapshot.child("userid").getValue(String.class).equals(muser.getUid()))
 
-                        {
-                            Log.d("hi", "I am happy");
-                            Toast.makeText(myPost.this,"Success",Toast.LENGTH_LONG).show();
-                            buy = dataSnapshot.getValue(Buy_and_sell.class);
-                            buy_and_sell.add(buy);
-                        }
-                   // buy = dataSnapshot.getValue(Buy_and_sell.class);
-
-                    //buy_and_sell.add(buy);
-                    Collections.reverse(buy_and_sell);// newly added code suspect
-                    adapters = new adapter2(myPost.this,buy_and_sell);
-                    rv.setAdapter(adapters);
-                    adapters.notifyDataSetChanged();
-                    //final String postkey = getReferrer(cardView).toString();
+                {
+                    Log.d("hi", "I am happy");
+                    Toast.makeText(myPost.this,"Success",Toast.LENGTH_LONG).show();
+                    buy = dataSnapshot.getValue(Buy_and_sell.class);
+                    buy_and_sell.add(buy);
                 }
+                // buy = dataSnapshot.getValue(Buy_and_sell.class);
 
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                //buy_and_sell.add(buy);
+                Collections.reverse(buy_and_sell);// newly added code suspect
+                adapters = new adapter2(myPost.this,buy_and_sell);
+                rv.setAdapter(adapters);
+                adapters.notifyDataSetChanged();
+                //final String postkey = getReferrer(cardView).toString();
+            }
 
-                }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
 
-                }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
 
-                }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+            }
 
-                }
-            });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         SharedPreferences sharedPreferences = getSharedPreferences("aa",MODE_PRIVATE);
         key = sharedPreferences.getString("key","null");
 
     }
-
     }
+
 
 
 

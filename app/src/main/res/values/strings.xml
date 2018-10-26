@@ -6,4 +6,5 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_random">random</string>
     <string name="title_activity_nav">nav</string>
+    <string name="title_activity_add_post_found">addPostFound</string>
 </resources>

@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.chella.buy.Activities.each_post;
 import com.example.chella.buy.Activities.myPost;
 import com.example.chella.buy.Model.Buy_and_sell;
 import com.example.chella.buy.R;
@@ -32,7 +34,7 @@ public class adapter3 extends RecyclerView.Adapter<adapter3.ViewHolder> {
 
     private Context context;
     private List<Buy_and_sell> buy_list;
-    private DatabaseReference databaseReference;
+
 
     public adapter3(Context context, List<Buy_and_sell> buy_list) {
         this.context = context;
@@ -43,7 +45,7 @@ public class adapter3 extends RecyclerView.Adapter<adapter3.ViewHolder> {
     @NonNull
     @Override
     public adapter3.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(context).inflate(R.layout.each_post_row,viewGroup,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.lostpost,viewGroup,false);
         //View vi = LayoutInflater.from(context).inflate(R.layout.comment_row,viewGroup,false);
         return new adapter3.ViewHolder(v,context);
         //return new adapter3.ViewHolder(vi,context);
@@ -71,15 +73,7 @@ public class adapter3 extends RecyclerView.Adapter<adapter3.ViewHolder> {
                 .into(viewHolder.image);
 
 
-
-
-
-
-
-
-
-
-    }
+        }
 
 
     @Override
@@ -96,20 +90,20 @@ public class adapter3 extends RecyclerView.Adapter<adapter3.ViewHolder> {
         public ImageView image;
         public TextView contact;
 
-        public Button delete;
+
         String userid;
         public ViewHolder(@NonNull View View, Context context) {
             super(View);
-            seller = View.findViewById(R.id.seller);
+            seller = View.findViewById(R.id.sellerf);
 
-            title = View.findViewById(R.id.product_name);
-            timestamp = View.findViewById(R.id.product_time);
-            price = View.findViewById(R.id.product_price);
-            desc = View.findViewById(R.id.product_desc);
-            image = View.findViewById(R.id.product);
-            contact=View.findViewById(R.id.con);
+            title = View.findViewById(R.id.product_namef);
+            timestamp = View.findViewById(R.id.product_timef);
+            price = View.findViewById(R.id.product_pricef);
+            desc = View.findViewById(R.id.product_descf);
+            image = View.findViewById(R.id.productf);
+            contact=View.findViewById(R.id.conf);
 
-            delete = View.findViewById(R.id.delete);
+
 
             userid = null;
             View.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +115,7 @@ public class adapter3 extends RecyclerView.Adapter<adapter3.ViewHolder> {
                 }
             });
 
-            databaseReference = FirebaseDatabase.getInstance().getReference("mBuy");
+
 
 
 

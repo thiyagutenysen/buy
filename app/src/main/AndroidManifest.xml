@@ -37,7 +37,13 @@
         <activity android:name=".Activities.add_post" />
         <activity android:name=".Activities.account" />
         <activity android:name=".Activities.myPost" />
-        <activity android:name=".Activities.each_post"></activity>
+        <activity android:name=".Activities.each_post" />
+        <activity android:name=".Activities.lostAndFound" />
+        <activity
+            android:name=".Activities.addPostFound"
+            android:label="@string/title_activity_add_post_found"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Activities.myPostFound"></activity>
     </application>
 
 </manifest>

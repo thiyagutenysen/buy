@@ -90,6 +90,7 @@ public class each_post extends AppCompatActivity {
        rv = findViewById(R.id.recycle);
        rv.setHasFixedSize(true);
        rv.setLayoutManager(new LinearLayoutManager(this));
+
        mdataBase.getReference().child("mBuy").addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -190,6 +191,7 @@ public class each_post extends AppCompatActivity {
                // Collections.reverse(buy_and_sell);// newly added code suspect
                 adapters = new adapter4(each_post.this,comments);
                 rv.setAdapter(adapters);
+                rv.scrollToPosition(comments.size() - 1);
                 adapters.notifyDataSetChanged();
                 //final String postkey = getReferrer(cardView).toString();
             }

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,16 @@ public class account extends AppCompatActivity {
                     case R.id.mypost:
                         startActivity(new Intent(account.this, myPost.class));
                         finish();
+                        break;
+                    case R.id.navigation_found:
+                        startActivity(new Intent(account.this, lostAndFound.class));
+                        finish();
+                        break;
+                    case R.id.mypostfounds:
+                        Log.d("intent","activity");
+                        startActivity(new Intent(account.this, myPostFound.class));
+                        finish();
+                        Log.d("int","act");
                         break;}
                 return true;
             }

@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +19,11 @@ import com.example.chella.buy.Model.Buy_and_sell;
 import com.example.chella.buy.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -38,23 +33,21 @@ import java.util.Date;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.support.constraint.Constraints.TAG;
 
-
-public class adapter2 extends RecyclerView.Adapter<adapter2.ViewHolder> {
-public long position;
-public String key;
-public String mey;
+public class adapter5 extends RecyclerView.Adapter<adapter5.ViewHolder> {
+    public long position;
+    public String key;
+    public String mey;
+    public String image;
+    private FirebaseStorage mdatabaseStorage;
+    private StorageReference photoRef;
 
 
     private Context context;
     private List<Buy_and_sell> buy_list;
     private DatabaseReference databaseReference;
-    private StorageReference mstorageReference,photoRef;
-    private String image;
 
-
-    public adapter2(Context context, List<Buy_and_sell> buy_list) {
+    public adapter5(Context context, List<Buy_and_sell> buy_list) {
         this.context = context;
         this.buy_list= buy_list;
     }
@@ -62,15 +55,15 @@ public String mey;
 
     @NonNull
     @Override
-    public adapter2.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(context).inflate(R.layout.mypost_row,viewGroup,false);
+    public adapter5.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(context).inflate(R.layout.mypost_found_row,viewGroup,false);
         return new ViewHolder(v,context);
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final Buy_and_sell buy = buy_list.get(i);
         //long timecreated = Long.valueOf(buy.getTimestamp());
-        final String imageurl;
+        String imageurl;
 
 
 
@@ -88,23 +81,7 @@ public String mey;
                 .load(imageurl)
                 .into(viewHolder.image);
         //final SharedPreferences sharedPreferences = context.getSharedPreferences("aa",Context.MODE_PRIVATE);
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mey = buy.getKey();
-                SharedPreferences sharedPreferences= context.getSharedPreferences("chella",MODE_PRIVATE);
-                SharedPreferences.Editor editor= sharedPreferences.edit();
-                editor.putString("key",mey);
-                editor.commit();
-                Intent intent = new Intent(context,each_post.class);
-                context.startActivity(intent);
 
-               Toast.makeText(context,mey,Toast.LENGTH_LONG).show();
-            }
-        });
-
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("mBuy");
-        mstorageReference = FirebaseStorage.getInstance().getReference().child("product");
 
         viewHolder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,11 +91,11 @@ public String mey;
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        Log.d("dev",dataSnapshot.child("image").getValue(String.class));
-                      image  = dataSnapshot.child("image").getValue(String.class);
+
+                        image  = (String) dataSnapshot.child("image").getValue();
                         // Toast.makeText(add_post.this,investor,Toast.LENGTH_LONG).show();
 
-                        Log.d("imggggg",image);
+
                     }
 
                     @Override
@@ -126,8 +103,7 @@ public String mey;
 
                     }
                 });
-
-                photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(image);
+                photoRef = mdatabaseStorage.getReferenceFromUrl(image);
                 photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -147,7 +123,6 @@ public String mey;
 
             }
         });
-
 
 
 
@@ -174,16 +149,16 @@ public String mey;
         String userid;
         public ViewHolder(@NonNull View View, Context context) {
             super(View);
-            seller = View.findViewById(R.id.seller);
+            seller = View.findViewById(R.id.sellerf);
 
-            title = View.findViewById(R.id.product_name);
-            timestamp = View.findViewById(R.id.product_time);
-            price = View.findViewById(R.id.product_price);
-            desc = View.findViewById(R.id.product_desc);
-            image = View.findViewById(R.id.product);
-            contact=View.findViewById(R.id.contactInfo);
+            title = View.findViewById(R.id.product_namef);
+            timestamp = View.findViewById(R.id.product_timef);
+            price = View.findViewById(R.id.product_pricef);
+            desc = View.findViewById(R.id.product_descf);
+            image = View.findViewById(R.id.productf);
+            contact=View.findViewById(R.id.contactInfof);
 
-            delete = View.findViewById(R.id.delete);
+            delete = View.findViewById(R.id.deletef);
 
             userid = null;
             View.setOnClickListener(new View.OnClickListener() {
@@ -195,13 +170,13 @@ public String mey;
                 }
             });
 
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("mBuy");
-            mstorageReference = FirebaseStorage.getInstance().getReference("product");
+            databaseReference = FirebaseDatabase.getInstance().getReference("mFound");
+            mdatabaseStorage=FirebaseStorage.getInstance();
 
 
 
 
         }
 
-        }
+    }
 }
